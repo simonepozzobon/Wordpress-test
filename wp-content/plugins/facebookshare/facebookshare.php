@@ -50,9 +50,7 @@ add_action( 'init', function() {
   $url_path = trim(parse_url( add_query_arg( array()), PHP_URL_PATH ), '/' );
   // $url_path = home_url();
   $path = wp_parse_url( home_url() );
-  print_r($path);
-  print_r('<br>');
-  print_r($url_path);
+
   if ( isset( $path['path'] ) ) {
       $path = $path['path'].'\//';
       $url_path = preg_replace( $path, '', $url_path );
@@ -61,8 +59,8 @@ add_action( 'init', function() {
     preg_match( "/name/", $url_path, $check );
   }
 
-  if ( isset($check) ) {
-      add_action( 'wp_head', 'facebookshare_add_meta', 2 );
+  if ( isset($check) && !empty($check) ) {
+      add_action( 'wp_head', 'facebookshare_add_meta' );
       add_filter( 'template_include','include_template' );
   }
 });

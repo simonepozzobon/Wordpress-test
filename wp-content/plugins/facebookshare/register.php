@@ -19,8 +19,8 @@
             ON $fbshare.media_id=$media.ID
             AND $fbshare.ID=$num";
   $img = $wpdb->get_row($query);
-  $current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
-  get_header(); ?>
+  $current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) ); ?>
+  <?php get_header(); ?>
 
   <div class="wrap">
   	<div id="primary" class="content-area">
