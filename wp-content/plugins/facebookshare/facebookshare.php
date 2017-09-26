@@ -50,9 +50,13 @@ add_action('init', function() {
   $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
   // $url_path = home_url();
   $path = wp_parse_url(home_url());
-  $path = $path['path'].'\//';
-  $url_path = preg_replace($path, '', $url_path);
-  preg_match("/name\//", $url_path, $check);
+
+  if ( $path ) {
+      $path = $path['path'].'\//';
+      $url_path = preg_replace($path, '', $url_path);
+      preg_match("/name\//", $url_path, $check);
+  }
+
   if ( $check ) {
      add_filter( 'template_include','include_template' );
   }
