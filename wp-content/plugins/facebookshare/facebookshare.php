@@ -127,7 +127,7 @@ function facebookshare_add_meta()
 
   echo '<meta property="og:url" content="'.$current_url.'" />';
   echo '<meta property="og:type" content="article" />';
-  echo '<meta property="og:title" content="'.$name.', Your Friday" />'
+  echo '<meta property="og:title" content="'.$name.', Your Friday" />';
   echo '<meta property="og:description" content="H-57 the best agency" />';
   echo '<meta property="og:image" content="'.$img->guid.'" />';
 }
