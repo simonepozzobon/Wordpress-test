@@ -57,6 +57,8 @@ add_action('init', function() {
       $path = $path['path'].'\//';
       $url_path = preg_replace($path, '', $url_path);
       preg_match("/name\//", $url_path, $check);
+  } else {
+    preg_match("/name/", $url_path, $check);
   }
 
   if ( isset($check) ) {
