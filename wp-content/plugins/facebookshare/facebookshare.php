@@ -51,7 +51,7 @@ add_action('init', function() {
   // $url_path = home_url();
   $path = wp_parse_url(home_url());
   print_r($path);
-  if ( $path['path'] ) {
+  if ( $path && $path['path'] ) {
       $path = $path['path'].'\//';
       $url_path = preg_replace($path, '', $url_path);
       preg_match("/name\//", $url_path, $check);
