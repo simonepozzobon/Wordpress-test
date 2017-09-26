@@ -46,23 +46,24 @@ add_filter( 'rewrite_rules_array','my_insert_rewrite_rules' );
 add_filter( 'query_vars','my_insert_query_vars' );
 // add_filter( 'template_include','include_template' );
 add_action( 'wp_loaded','my_flush_rules' );
-add_action('init', function() {
-  $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
+add_action( 'init', function() {
+  $url_path = trim(parse_url( add_query_arg( array()), PHP_URL_PATH ), '/' );
   // $url_path = home_url();
-  $path = wp_parse_url(home_url());
+  $path = wp_parse_url( home_url() );
   print_r($path);
   print_r('<br>');
   print_r($url_path);
-  if ( isset($path['path']) ) {
+  if ( isset( $path['path'] ) ) {
       $path = $path['path'].'\//';
-      $url_path = preg_replace($path, '', $url_path);
-      preg_match("/name\//", $url_path, $check);
+      $url_path = preg_replace( $path, '', $url_path );
+      preg_match( "/name\//", $url_path, $check );
   } else {
-    preg_match("/name/", $url_path, $check);
+    preg_match( "/name/", $url_path, $check );
   }
 
   if ( isset($check) ) {
-     add_filter( 'template_include','include_template' );
+      add_action( 'wp_head', 'facebookshare_add_meta', 2 );
+      add_filter( 'template_include','include_template' );
   }
 });
 
@@ -82,14 +83,13 @@ function my_insert_rewrite_rules( $rules )
     $newrules = array();
     $newrules['name/(.*?)'] = 'index.php?sp_name=$matches[1]';
 
-
     return $newrules + $rules;
 }
 
 // Adding the id var so that WP recognizes it
 function my_insert_query_vars( $vars )
 {
-    array_push($vars, 'sp_name');
+    array_push( $vars, 'sp_name' );
     return $vars;
 }
 
@@ -99,6 +99,38 @@ function include_template( $template )
   return PLUGIN_PATH . 'register.php';
 }
 
+
+// Add metadata
+function facebookshare_add_meta()
+{
+  global $wp;
+  global $wpdb;
+  $fbshare = $wpdb->prefix . 'facebookshare';
+  $media = $wpdb->prefix . 'posts';
+
+  // Get the name
+  $name = preg_replace('/name\//', '',$wp->request);
+
+  // Get the image
+  $query = "SELECT count(*) FROM $fbshare";
+  $max = $wpdb->get_var($query);
+
+  $num = rand(1, $max);
+
+  $query = "SELECT $fbshare.media_id, $media.guid
+            FROM $fbshare
+            INNER JOIN $media
+            ON $fbshare.media_id=$media.ID
+            AND $fbshare.ID=$num";
+  $img = $wpdb->get_row($query);
+  $current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+
+  echo '<meta property="og:url" content="'.$current_url.'" />';
+  echo '<meta property="og:type" content="article" />';
+  echo '<meta property="og:title" content="'.$name.', Your Friday" />'
+  echo '<meta property="og:description" content="H-57 the best agency" />';
+  echo '<meta property="og:image" content="'.$img->guid.'" />';
+}
 
 /*
  *
