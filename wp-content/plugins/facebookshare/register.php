@@ -19,16 +19,8 @@
             ON $fbshare.media_id=$media.ID
             AND $fbshare.ID=$num";
   $img = $wpdb->get_row($query);
-  $current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) ); ?>
-
-
-  <meta property="og:url"                content="<?php echo $current_url ?>" />
-  <meta property="og:type"               content="article" />
-  <meta property="og:title"              content="<?php $name ?>, Your Friday" />
-  <meta property="og:description"        content="H-57 the best agency" />
-  <meta property="og:image"              content="<?php echo $img->guid ?>" />
-
-  <?php get_header(); ?>
+  $current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+  get_header(); ?>
 
   <div class="wrap">
   	<div id="primary" class="content-area">
