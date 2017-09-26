@@ -57,7 +57,7 @@ add_action('init', function() {
       preg_match("/name\//", $url_path, $check);
   }
 
-  if ( $check ) {
+  if ( isset($check) ) {
      add_filter( 'template_include','include_template' );
   }
 });
