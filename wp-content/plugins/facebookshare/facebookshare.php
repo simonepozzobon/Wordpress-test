@@ -50,7 +50,7 @@ add_action('init', function() {
   $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH), '/');
   // $url_path = home_url();
   $path = wp_parse_url(home_url());
-
+  print_r($path);
   if ( $path['path'] ) {
       $path = $path['path'].'\//';
       $url_path = preg_replace($path, '', $url_path);
